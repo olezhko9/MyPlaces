@@ -26,6 +26,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private boolean mPermissionDenied = false;
     static final int LOCATION_PERMISSION_REQUEST_CODE = 9999;
 
     @Override
@@ -55,19 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
 //        mMap.setPadding(0, 0, 0, 120);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION};
-            ActivityCompat.requestPermissions(this,
-                    permissions,
-                    LOCATION_PERMISSION_REQUEST_CODE
-            );
-        } else {
-            mMap.setMyLocationEnabled(true);
-            getDeviceLocation();
-        }
+        enableMyLocation();
 
         LatLng universityLL = new LatLng(59.9556118,30.3096795);
         Marker mUniversity = mMap.addMarker(new MarkerOptions()
@@ -77,27 +66,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
         );
         mUniversity.setTag(0);
+
+
     }
 
+    private void enableMyLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION};
+            ActivityCompat.requestPermissions(this,
+                    permissions,
+                    LOCATION_PERMISSION_REQUEST_CODE
+            );
+        } else if (mMap != null) {
+            mMap.setMyLocationEnabled(true);
+            getDeviceLocation();
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mMap.setMyLocationEnabled(true);
-                    getDeviceLocation();
-                } else {
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            }
+
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
+        }
+
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            enableMyLocation();
+        } else {
+            mPermissionDenied = true;
         }
     }
 
     public void getDeviceLocation() {
+
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         try {
@@ -116,7 +123,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
         } catch (SecurityException e) {
-            Toast.makeText(this.getApplicationContext(), "Permission disabled", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getApplicationContext(),
+                    "Разрешите доступ к местоположению!", Toast.LENGTH_LONG).show();
         }
     }
 }
