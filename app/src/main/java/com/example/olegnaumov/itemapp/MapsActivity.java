@@ -5,8 +5,10 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -31,14 +33,26 @@ public class MapsActivity extends FragmentActivity implements
     static final int LOCATION_PERMISSION_REQUEST_CODE = 9999;
     private Marker marker;
 
+    FloatingActionButton mFab;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mFab = (FloatingActionButton) findViewById(R.id.add_marker_fab);
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaveMarkerDialog saveMarkerDialog = new SaveMarkerDialog();
+                saveMarkerDialog.show(getSupportFragmentManager(), "Marker Dialog");
+            }
+        });
     }
 
 
