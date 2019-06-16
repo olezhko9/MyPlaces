@@ -3,10 +3,10 @@ package com.example.olegnaumov.itemapp;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -22,12 +22,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements
+        OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean mPermissionDenied = false;
     static final int LOCATION_PERMISSION_REQUEST_CODE = 9999;
+    private Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-//        mMap.setPadding(0, 0, 0, 120);
 
         enableMyLocation();
 
@@ -65,9 +65,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .snippet("Небольшое описание")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
         );
-        mUniversity.setTag(0);
 
+        marker = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
+        googleMap.setOnCameraMoveListener(this);
     }
 
     private void enableMyLocation() {
@@ -126,5 +129,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(this.getApplicationContext(),
                     "Разрешите доступ к местоположению!", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onCameraMove() {
+        marker.setPosition(mMap.getCameraPosition().target);
     }
 }
