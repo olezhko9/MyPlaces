@@ -49,7 +49,13 @@ public class MapsActivity extends FragmentActivity implements
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Bundle markerLocationBundle = new Bundle();
+                markerLocationBundle.putDouble("markerLat", marker.getPosition().latitude);
+                markerLocationBundle.putDouble("markerLng", marker.getPosition().longitude);
+
                 SaveMarkerDialog saveMarkerDialog = new SaveMarkerDialog();
+                saveMarkerDialog.setArguments(markerLocationBundle);
                 saveMarkerDialog.show(getSupportFragmentManager(), "Marker Dialog");
             }
         });

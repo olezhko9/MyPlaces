@@ -21,9 +21,14 @@ public class SaveMarkerDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_marker, null);
 
-        builder
+        double markerLat, markerLng;
+        if (getArguments() != null) {
+            markerLat = getArguments().getDouble("markerLat");
+            markerLng = getArguments().getDouble("markerLng");
+
+            builder
                 .setView(view)
-                .setTitle("Добавить место")
+                .setTitle(String.format("Добавить место\n%f, %f", markerLat, markerLng))
                 .setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -44,6 +49,9 @@ public class SaveMarkerDialog extends AppCompatDialogFragment {
                         ).show();
                     }
                 });
+
+        }
+
 
         markerTitleEditText = view.findViewById(R.id.marker_title_et);
         markerDescriptionEditText = view.findViewById(R.id.marker_description_et);
