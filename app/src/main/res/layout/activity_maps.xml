@@ -16,7 +16,16 @@
         android:layout_height="match_parent"
         tools:context=".MapsActivity" />
 
-    <!-- подключение нижнего экрана -->
-    <!--<include layout="@layout/bottom_sheet" />-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_marker_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_white_24dp"
+        app:layout_anchorGravity="bottom|right|end"
+        android:clickable="true"
+        android:focusable="true" />
 
 </android.support.design.widget.CoordinatorLayout>
