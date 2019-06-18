@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class SaveMarkerDialog extends AppCompatDialogFragment {
 
-    private EditText markerTitleEditText, markerDescriptionEditText;
+    private EditText markerDescriptionEditText;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -42,9 +42,10 @@ public class SaveMarkerDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         Toast.makeText(
                                 getContext(),
-                                markerTitleEditText.getText().toString(),
+                                markerDescriptionEditText.getText().toString(),
                                 Toast.LENGTH_LONG
                         ).show();
                     }
@@ -53,7 +54,6 @@ public class SaveMarkerDialog extends AppCompatDialogFragment {
         }
 
 
-        markerTitleEditText = view.findViewById(R.id.marker_title_et);
         markerDescriptionEditText = view.findViewById(R.id.marker_description_et);
 
         return builder.create();
