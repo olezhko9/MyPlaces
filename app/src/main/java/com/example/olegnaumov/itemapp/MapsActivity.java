@@ -5,10 +5,14 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -25,7 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class MapsActivity extends FragmentActivity implements
-        OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
+        OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -91,6 +95,7 @@ public class MapsActivity extends FragmentActivity implements
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
         googleMap.setOnCameraMoveListener(this);
+        googleMap.setOnMarkerClickListener(this);
     }
 
     private void enableMyLocation() {
@@ -154,5 +159,30 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onCameraMove() {
         marker.setPosition(mMap.getCameraPosition().target);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        if (!marker.equals(this.marker)) {
+
+            BottomSheetDialog bottomSheet = new BottomSheetDialog(MapsActivity.this);
+            View dialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+            bottomSheet.setContentView(dialogView);
+
+            BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
+            bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics()));
+
+
+            TextView placeTitleTV = dialogView.findViewById(R.id.place_title_tv);
+            TextView placeDescriptionTV = dialogView.findViewById(R.id.place_description_tv);
+
+            placeTitleTV.setText(marker.getTitle());
+            placeDescriptionTV.setText(marker.getSnippet());
+
+            bottomSheet.show();
+        }
+        return true;
     }
 }
