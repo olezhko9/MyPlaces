@@ -2,9 +2,9 @@ package com.example.olegnaumov.myplaces.presenter;
 
 import com.example.olegnaumov.myplaces.view.MvpView;
 
-public interface MvpPresenter {
+public interface MvpPresenter<V extends MvpView> {
 
-    void attachView(MvpView mvpView);
+    void attachView(V mvpView);
 
     void detachView();
 
