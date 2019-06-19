@@ -1,13 +1,16 @@
 package com.example.olegnaumov.myplaces;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 
+import com.example.olegnaumov.myplaces.model.MvpModel;
+import com.example.olegnaumov.myplaces.model.MyPlace;
 import com.example.olegnaumov.myplaces.presenter.MvpPresenter;
 import com.example.olegnaumov.myplaces.view.MvpView;
 import com.google.android.gms.maps.model.Marker;
+
+import java.util.List;
 
 public interface MapPlacesContract {
 
@@ -31,5 +34,14 @@ public interface MapPlacesContract {
         void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 
         void getDeviceLocation();
+    }
+
+    interface Model extends MvpModel {
+
+        List<MyPlace> getAllPlaces();
+
+        void addPlace(MyPlace place);
+
+        void delete(MyPlace place);
     }
 }
