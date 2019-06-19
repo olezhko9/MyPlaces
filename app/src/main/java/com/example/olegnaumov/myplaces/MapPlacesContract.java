@@ -17,7 +17,7 @@ public interface MapPlacesContract {
 
         void showPlaceSavingDialog(Bundle markerLocationBundle);
 
-        void enableMyLocation();
+        void enableMyLocationButton();
 
         void animateCamera(Location location);
     }

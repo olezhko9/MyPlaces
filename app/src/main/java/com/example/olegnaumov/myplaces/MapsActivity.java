@@ -23,8 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements
-        OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMarkerClickListener,
-        MapPlacesContract.View {
+        OnMapReadyCallback, GoogleMap.OnMarkerClickListener, MapPlacesContract.View {
 
     private GoogleMap mMap;
     private Marker mapCenterMarker;
@@ -69,7 +68,6 @@ public class MapsActivity extends FragmentActivity implements
 
         mMap = googleMap;
 
-//        enableMyLocation();
         mPresenter.enableMyLocation();
 
         LatLng universityLL = new LatLng(59.9556118,30.3096795);
@@ -84,8 +82,20 @@ public class MapsActivity extends FragmentActivity implements
                 .position(new LatLng(0, 0))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
-        googleMap.setOnCameraMoveListener(this);
+
+        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                mapCenterMarker.setPosition(mMap.getCameraPosition().target);
+            }
+        });
+
         googleMap.setOnMarkerClickListener(this);
+    }
+
+    @Override
+    public Activity getActivity() {
+        return MapsActivity.this;
     }
 
     @Override
@@ -95,31 +105,10 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onCameraMove() {
-        mapCenterMarker.setPosition(mMap.getCameraPosition().target);
-    }
-
-    @Override
     public boolean onMarkerClick(Marker marker) {
 
         if (!marker.equals(mapCenterMarker)) {
-
-            BottomSheetDialog bottomSheet = new BottomSheetDialog(MapsActivity.this);
-            View dialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-            bottomSheet.setContentView(dialogView);
-
-            BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
-            bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics()));
-
-
-            TextView placeTitleTV = dialogView.findViewById(R.id.place_title_tv);
-            TextView placeDescriptionTV = dialogView.findViewById(R.id.place_description_tv);
-
-            placeTitleTV.setText(marker.getTitle());
-            placeDescriptionTV.setText(marker.getSnippet());
-
-            bottomSheet.show();
+            showBottomSheetDialog(marker);
         }
         return true;
     }
@@ -137,19 +126,39 @@ public class MapsActivity extends FragmentActivity implements
         saveMarkerDialog.show(getSupportFragmentManager(), "Saving Dialog");
     }
 
-    public void enableMyLocation() {
+    public void showBottomSheetDialog(Marker marker) {
+        BottomSheetDialog bottomSheet = new BottomSheetDialog(MapsActivity.this);
+        View dialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+        bottomSheet.setContentView(dialogView);
+
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
+        bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics()));
+
+
+        TextView placeTitleTV = dialogView.findViewById(R.id.place_title_tv);
+        TextView placeDescriptionTV = dialogView.findViewById(R.id.place_description_tv);
+
+        placeTitleTV.setText(marker.getTitle());
+        placeDescriptionTV.setText(marker.getSnippet());
+
+        bottomSheet.show();
+    }
+
+    public void enableMyLocationButton() {
         if (mMap != null) {
             mMap.setMyLocationEnabled(true);
         }
     }
 
     @Override
-    public Activity getActivity() {
-        return MapsActivity.this;
+    public void makeToast(String msg) {
+        Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void makeToast(String msg) {
-        Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
     }
 }

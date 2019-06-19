@@ -26,16 +26,9 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
         context = mvpView.getActivity().getApplicationContext();
     }
 
-    public void askInfoAboutPlace(Marker marker) {
-        Bundle markerLocationBundle = new Bundle();
-        markerLocationBundle.putDouble("markerLat", marker.getPosition().latitude);
-        markerLocationBundle.putDouble("markerLng", marker.getPosition().longitude);
-
-        getView().showPlaceSavingDialog(markerLocationBundle);
-    }
-
     public void enableMyLocation() {
         context = getView().getActivity().getApplicationContext();
+
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -49,7 +42,7 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
                     LOCATION_PERMISSION_REQUEST_CODE
             );
         } else {
-            getView().enableMyLocation();
+            getView().enableMyLocationButton();
             this.getDeviceLocation();
         }
     }
@@ -81,5 +74,13 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             enableMyLocation();
         }
+    }
+
+    public void askInfoAboutPlace(Marker marker) {
+        Bundle markerLocationBundle = new Bundle();
+        markerLocationBundle.putDouble("markerLat", marker.getPosition().latitude);
+        markerLocationBundle.putDouble("markerLng", marker.getPosition().longitude);
+
+        getView().showPlaceSavingDialog(markerLocationBundle);
     }
 }
