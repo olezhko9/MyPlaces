@@ -1,4 +1,4 @@
-package com.example.olegnaumov.itemapp;
+package com.example.olegnaumov.myplaces;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package com.example.olegnaumov.itemapp;
+package com.example.olegnaumov.myplaces;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

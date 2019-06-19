@@ -1,4 +1,4 @@
-package com.example.olegnaumov.itemapp;
+package com.example.olegnaumov.myplaces;
 
 import org.junit.Test;
 
