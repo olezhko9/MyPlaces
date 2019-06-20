@@ -27,7 +27,9 @@ public class MapPlacesJsonModel implements MapPlacesContract.Model {
     @Override
     public List<MyPlace> getAllPlaces() {
         String jsonPlace = readFromJSON();
-        places = Arrays.asList(new Gson().fromJson(jsonPlace, MyPlace[].class));
+        if (jsonPlace != null) {
+            places = Arrays.asList(new Gson().fromJson(jsonPlace, MyPlace[].class));
+        }
         return places;
     }
 

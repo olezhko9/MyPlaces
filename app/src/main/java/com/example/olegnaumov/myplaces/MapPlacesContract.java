@@ -8,6 +8,7 @@ import com.example.olegnaumov.myplaces.model.MvpModel;
 import com.example.olegnaumov.myplaces.model.MyPlace;
 import com.example.olegnaumov.myplaces.presenter.MvpPresenter;
 import com.example.olegnaumov.myplaces.view.MvpView;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public interface MapPlacesContract {
         void enableMyLocationButton();
 
         void animateCamera(Location location);
+
+        void addMapMarker(String title, String snippet, LatLng latLng);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -34,6 +37,8 @@ public interface MapPlacesContract {
         void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 
         void getDeviceLocation();
+
+        void onMapReady();
     }
 
     interface Model extends MvpModel {

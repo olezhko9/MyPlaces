@@ -70,13 +70,8 @@ public class MapsActivity extends FragmentActivity implements
 
         mPresenter.enableMyLocation();
 
-        LatLng universityLL = new LatLng(59.9556118,30.3096795);
-        Marker mUniversity = mMap.addMarker(new MarkerOptions()
-                .position(universityLL)
-                .title("ITMO")
-                .snippet("Небольшое описание")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-        );
+//        LatLng universityLL = new LatLng(59.9556118,30.3096795);
+//        Marker mUniversity = addMapMarker("ITMO", "Небольшое описание", universityLL);
 
         mapCenterMarker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
@@ -91,6 +86,8 @@ public class MapsActivity extends FragmentActivity implements
         });
 
         googleMap.setOnMarkerClickListener(this);
+
+        mPresenter.onMapReady();
     }
 
     @Override
@@ -145,6 +142,7 @@ public class MapsActivity extends FragmentActivity implements
         bottomSheet.show();
     }
 
+    @Override
     public void enableMyLocationButton() {
         if (mMap != null) {
             mMap.setMyLocationEnabled(true);
@@ -160,5 +158,14 @@ public class MapsActivity extends FragmentActivity implements
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+    }
+
+    @Override
+    public void addMapMarker(String title, String snippet, LatLng latLng) {
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latLng.latitude, latLng.longitude))
+                .title(title)
+                .snippet(snippet)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
     }
 }

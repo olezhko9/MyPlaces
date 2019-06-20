@@ -21,12 +21,12 @@ public class MyPlace {
     @Expose
     private double latitude;
 
-    public MyPlace(String title, String description, double longitude, double latitude) {
+    public MyPlace(String title, String description, double latitude, double longitude) {
 
         this.title = title;
         this.description = description;
-        this.longitude = longitude;
         this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getTitle() {
