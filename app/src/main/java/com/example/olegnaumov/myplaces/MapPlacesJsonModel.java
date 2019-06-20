@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.olegnaumov.myplaces.model.MyPlace;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +12,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MapPlacesJsonModel implements MapPlacesContract.Model {
@@ -28,7 +28,7 @@ public class MapPlacesJsonModel implements MapPlacesContract.Model {
     public List<MyPlace> getAllPlaces() {
         String jsonPlace = readFromJSON();
         if (jsonPlace != null) {
-            places = Arrays.asList(new Gson().fromJson(jsonPlace, MyPlace[].class));
+            places = new Gson().fromJson(jsonPlace, new TypeToken<List<MyPlace>>(){}.getType());
         }
         return places;
     }

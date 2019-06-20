@@ -28,15 +28,6 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
     public MapPlacesPresenter(Context context) {
         this.context = context;
         jsonModel = new MapPlacesJsonModel(context);
-
-//        MyPlace place = new MyPlace("Случайное место", "Место добавлено из кода",
-//                60, 30);
-//
-//        MyPlace place1 = new MyPlace("Случайное место из кода", "Место добавлено из кода",
-//                59.98,30.312);
-//
-//        jsonModel.addPlace(place);
-//        jsonModel.addPlace(place1);
     }
 
     @Override
@@ -107,11 +98,22 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
     }
 
     @Override
-    public void askInfoAboutPlace(Marker marker) {
+    public void onAddMarkerFabClicked(Marker marker) {
         Bundle markerLocationBundle = new Bundle();
         markerLocationBundle.putDouble("markerLat", marker.getPosition().latitude);
         markerLocationBundle.putDouble("markerLng", marker.getPosition().longitude);
 
         getView().showPlaceSavingDialog(markerLocationBundle);
+    }
+
+    @Override
+    public void onSaveButtonClicked(String title, String description, double lat, double lng) {
+        if (title.length() != 0 && description.length() != 0) {
+            MyPlace newPlace = new MyPlace(title, description, lat, lng);
+            jsonModel.addPlace(newPlace);
+            getView().addMapMarker(title, description, new LatLng(lat, lng));
+        } else {
+            getView().makeToast("Проверьте правильность введенных данных");
+        }
     }
 }

@@ -30,7 +30,7 @@ public interface MapPlacesContract {
 
     interface Presenter extends MvpPresenter<View> {
 
-        void askInfoAboutPlace(Marker marker);
+        void onAddMarkerFabClicked(Marker marker);
 
         void enableMyLocation();
 
@@ -39,6 +39,8 @@ public interface MapPlacesContract {
         void getDeviceLocation();
 
         void onMapReady();
+
+        void onSaveButtonClicked(String title, String description, double lat, double lng);
     }
 
     interface Model extends MvpModel {

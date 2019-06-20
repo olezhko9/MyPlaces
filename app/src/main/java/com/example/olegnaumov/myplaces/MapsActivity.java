@@ -48,7 +48,7 @@ public class MapsActivity extends FragmentActivity implements
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.askInfoAboutPlace(mapCenterMarker);
+                mPresenter.onAddMarkerFabClicked(mapCenterMarker);
             }
         });
     }
@@ -69,9 +69,6 @@ public class MapsActivity extends FragmentActivity implements
         mMap = googleMap;
 
         mPresenter.enableMyLocation();
-
-//        LatLng universityLL = new LatLng(59.9556118,30.3096795);
-//        Marker mUniversity = addMapMarker("ITMO", "Небольшое описание", universityLL);
 
         mapCenterMarker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
@@ -119,6 +116,7 @@ public class MapsActivity extends FragmentActivity implements
 
     public void showPlaceSavingDialog(Bundle markerLocationBundle) {
         SaveMarkerDialog saveMarkerDialog = new SaveMarkerDialog();
+        saveMarkerDialog.setPresenter(mPresenter);
         saveMarkerDialog.setArguments(markerLocationBundle);
         saveMarkerDialog.show(getSupportFragmentManager(), "Saving Dialog");
     }

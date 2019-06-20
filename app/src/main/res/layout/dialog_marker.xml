@@ -11,6 +11,7 @@
         android:id="@+id/marker_title_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textCapWords"
         android:singleLine="true"
         android:hint="Название"/>
 
