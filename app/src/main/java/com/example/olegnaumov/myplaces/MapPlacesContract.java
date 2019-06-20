@@ -42,6 +42,8 @@ public interface MapPlacesContract {
 
         void addPlace(MyPlace place);
 
-        void delete(MyPlace place);
+        void deletePlace(MyPlace place);
+
+        MyPlace getPlace();
     }
 }

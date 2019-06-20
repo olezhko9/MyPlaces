@@ -41,7 +41,7 @@ public class MapsActivity extends FragmentActivity implements
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mPresenter = new MapPlacesPresenter();
+        mPresenter = new MapPlacesPresenter(getApplicationContext());
         mPresenter.attachView(this);
 
         mFab = (FloatingActionButton) findViewById(R.id.add_marker_fab);

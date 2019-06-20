@@ -1,10 +1,24 @@
 package com.example.olegnaumov.myplaces.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class MyPlace {
 
+    @SerializedName("title")
+    @Expose
     private String title;
+
+    @SerializedName("description")
+    @Expose
     private String description;
+
+    @SerializedName("longitude")
+    @Expose
     private double longitude;
+
+    @SerializedName("latitude")
+    @Expose
     private double latitude;
 
     public MyPlace(String title, String description, double longitude, double latitude) {

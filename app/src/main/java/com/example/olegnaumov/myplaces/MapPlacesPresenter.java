@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
+import com.example.olegnaumov.myplaces.model.MyPlace;
 import com.example.olegnaumov.myplaces.presenter.BasePresenter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -19,15 +20,27 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 9999;
     private Context context;
+    private MapPlacesContract.Model jsonModel;
+
+    public MapPlacesPresenter(Context context) {
+        this.context = context;
+        jsonModel = new MapPlacesJsonModel(context);
+
+        MyPlace place = new MyPlace("Случайное место", "Место добавлено из кода",
+                111.0, 111.0);
+
+        jsonModel.addPlace(place);
+    }
 
     @Override
     public void attachView(MapPlacesContract.View mvpView) {
         super.attachView(mvpView);
-        context = mvpView.getActivity().getApplicationContext();
+
+        MyPlace place = jsonModel.getPlace();
+        getView().makeToast(place.getTitle());
     }
 
     public void enableMyLocation() {
-        context = getView().getActivity().getApplicationContext();
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
