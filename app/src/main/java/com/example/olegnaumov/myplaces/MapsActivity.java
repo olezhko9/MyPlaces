@@ -68,7 +68,7 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-
+        mMap.setPadding(0, 200, 0, 0);
         mPresenter.enableMyLocation();
 
         mapCenterMarker = mMap.addMarker(new MarkerOptions()

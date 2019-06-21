@@ -16,6 +16,36 @@
         android:layout_height="match_parent"
         tools:context=".MapsActivity" />
 
+    <RelativeLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:elevation="10dp"
+        android:background="#fff">
+
+        <ImageView
+            android:id="@+id/ic_magnify"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/ic_menu_search"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/ic_magnify"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:background="@null"
+            android:hint="Введите описание места" />
+
+    </RelativeLayout>
+
     <include layout="@layout/bottom_sheet" />
 
     <android.support.design.widget.FloatingActionButton
