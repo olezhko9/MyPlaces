@@ -190,7 +190,7 @@ public class MapsActivity extends FragmentActivity implements
                 .position(new LatLng(latLng.latitude, latLng.longitude))
                 .title(title)
                 .snippet(snippet)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_24dp)));
         marker.setTag(tag);
     }
 
