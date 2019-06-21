@@ -34,14 +34,15 @@ public class MapPlacesJsonModel implements MapPlacesContract.Model {
     }
 
     @Override
-    public void addPlace(MyPlace place) {
+    public int addPlace(MyPlace place) {
         places.add(place);
         writeToJSON(new Gson().toJson(places));
+        return places.size() - 1;
     }
 
     @Override
-    public void deletePlace(MyPlace place) {
-
+    public void deletePlace(int tag) {
+        places.remove(tag);
     }
 
     @Override

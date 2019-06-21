@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +28,8 @@ public class MapsActivity extends FragmentActivity implements
 
     private GoogleMap mMap;
     private Marker mapCenterMarker;
-
-    FloatingActionButton mFab;
+    private FloatingActionButton mFab;
+    private BottomSheetDialog bottomSheet;
 
     private MapPlacesContract.Presenter mPresenter;
 
@@ -121,23 +122,48 @@ public class MapsActivity extends FragmentActivity implements
         saveMarkerDialog.show(getSupportFragmentManager(), "Saving Dialog");
     }
 
-    public void showBottomSheetDialog(Marker marker) {
-        BottomSheetDialog bottomSheet = new BottomSheetDialog(MapsActivity.this);
-        View dialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-        bottomSheet.setContentView(dialogView);
+    @Override
+    public void showBottomSheetDialog(final Marker marker) {
+        bottomSheet = new BottomSheetDialog(MapsActivity.this);
+        View bottomDialogView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+        bottomSheet.setContentView(bottomDialogView);
 
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) bottomDialogView.getParent());
         bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics()));
 
 
-        TextView placeTitleTV = dialogView.findViewById(R.id.place_title_tv);
-        TextView placeDescriptionTV = dialogView.findViewById(R.id.place_description_tv);
+        TextView placeTitleTV = bottomDialogView.findViewById(R.id.place_title_tv);
+        TextView placeDescriptionTV = bottomDialogView.findViewById(R.id.place_description_tv);
 
         placeTitleTV.setText(marker.getTitle());
         placeDescriptionTV.setText(marker.getSnippet());
 
+        Button closeButton = bottomDialogView.findViewById(R.id.button_close);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeBottomSheetDialog();
+            }
+        });
+
+        Button deletePlaceButton = bottomDialogView.findViewById(R.id.delete_place_btn);
+        deletePlaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onDeletePlaceButtonClicked(marker);
+            }
+        });
+
         bottomSheet.show();
+    }
+
+
+    @Override
+    public void closeBottomSheetDialog() {
+        if (bottomSheet != null) {
+            bottomSheet.cancel();
+        }
     }
 
     @Override
@@ -159,11 +185,17 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     @Override
-    public void addMapMarker(String title, String snippet, LatLng latLng) {
-        mMap.addMarker(new MarkerOptions()
+    public void addMapMarker(String title, String snippet, LatLng latLng, int tag) {
+        Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latLng.latitude, latLng.longitude))
                 .title(title)
                 .snippet(snippet)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        marker.setTag(tag);
+    }
+
+    @Override
+    public void removeMapMarker(Marker marker) {
+        marker.remove();
     }
 }

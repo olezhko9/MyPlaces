@@ -91,9 +91,10 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
     public void onMapReady() {
         List<MyPlace> places = jsonModel.getAllPlaces();
 
-        for (MyPlace place : places) {
+        for (int i = 0; i < places.size(); i++) {
+            MyPlace place = places.get(i);
             LatLng location = new LatLng(place.getLatitude(), place.getLongitude());
-            getView().addMapMarker(place.getTitle(), place.getDescription(), location);
+            getView().addMapMarker(place.getTitle(), place.getDescription(), location, i);
         }
     }
 
@@ -110,10 +111,17 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
     public void onSaveButtonClicked(String title, String description, double lat, double lng) {
         if (title.length() != 0 && description.length() != 0) {
             MyPlace newPlace = new MyPlace(title, description, lat, lng);
-            jsonModel.addPlace(newPlace);
-            getView().addMapMarker(title, description, new LatLng(lat, lng));
+            int tag = jsonModel.addPlace(newPlace);
+            getView().addMapMarker(title, description, new LatLng(lat, lng), tag);
         } else {
             getView().makeToast("Проверьте правильность введенных данных");
         }
+    }
+
+    @Override
+    public void onDeletePlaceButtonClicked(Marker marker) {
+        jsonModel.deletePlace((int) marker.getTag());
+        getView().removeMapMarker(marker);
+        getView().closeBottomSheetDialog();
     }
 }

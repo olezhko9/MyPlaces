@@ -21,11 +21,17 @@ public interface MapPlacesContract {
 
         void showPlaceSavingDialog(Bundle markerLocationBundle);
 
+        void showBottomSheetDialog(Marker marker);
+
+        void closeBottomSheetDialog();
+
         void enableMyLocationButton();
 
         void animateCamera(Location location);
 
-        void addMapMarker(String title, String snippet, LatLng latLng);
+        void addMapMarker(String title, String snippet, LatLng latLng, int tag);
+
+        void removeMapMarker(Marker marker);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -41,15 +47,17 @@ public interface MapPlacesContract {
         void onMapReady();
 
         void onSaveButtonClicked(String title, String description, double lat, double lng);
+
+        void onDeletePlaceButtonClicked(Marker marker);
     }
 
     interface Model extends MvpModel {
 
         List<MyPlace> getAllPlaces();
 
-        void addPlace(MyPlace place);
+        int addPlace(MyPlace place);
 
-        void deletePlace(MyPlace place);
+        void deletePlace(int placeNumber);
 
         MyPlace getPlace();
     }
