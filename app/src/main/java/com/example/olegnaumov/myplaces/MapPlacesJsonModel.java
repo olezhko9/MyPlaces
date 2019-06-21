@@ -43,6 +43,7 @@ public class MapPlacesJsonModel implements MapPlacesContract.Model {
     @Override
     public void deletePlace(int tag) {
         places.remove(tag);
+        writeToJSON(new Gson().toJson(places));
     }
 
     @Override
