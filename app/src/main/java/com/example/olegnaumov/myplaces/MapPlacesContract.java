@@ -3,6 +3,8 @@ package com.example.olegnaumov.myplaces;
 import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.example.olegnaumov.myplaces.model.MvpModel;
 import com.example.olegnaumov.myplaces.model.MyPlace;
@@ -32,6 +34,8 @@ public interface MapPlacesContract {
         void addMapMarker(String title, String snippet, LatLng latLng, int tag);
 
         void removeMapMarker(Marker marker);
+
+        void setAutoCompleteAdapter(ArrayAdapter adapter);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -44,12 +48,16 @@ public interface MapPlacesContract {
 
         void getDeviceLocation();
 
-        List<MyPlace> onMapReady();
+        void onMapReady();
 
         void onSaveButtonClicked(String title, String description, double lat, double lng);
 
         void onDeletePlaceButtonClicked(Marker marker);
-    }
+
+        void onSearchPlaceItemClicked(AdapterView<?> adapterView, int pos);
+
+        void createAutoCompleteAdapter();
+}
 
     interface Model extends MvpModel {
 

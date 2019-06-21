@@ -88,9 +88,10 @@ public class PlaceAdapter extends ArrayAdapter<MyPlace> {
         }
     };
 
-    public void updateItems(List<MyPlace> items) {
+    public ArrayAdapter updateItems(List<MyPlace> items) {
         this.items = items;
         this.tempItems = new ArrayList<>(items);
         this.suggestions = new ArrayList<>();
+        return this;
     }
 }
