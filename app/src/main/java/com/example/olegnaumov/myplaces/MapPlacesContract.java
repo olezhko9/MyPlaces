@@ -44,7 +44,7 @@ public interface MapPlacesContract {
 
         void getDeviceLocation();
 
-        void onMapReady();
+        List<MyPlace> onMapReady();
 
         void onSaveButtonClicked(String title, String description, double lat, double lng);
 

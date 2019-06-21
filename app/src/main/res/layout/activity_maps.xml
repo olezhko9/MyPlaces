@@ -35,13 +35,19 @@
             android:layout_centerVertical="true"
             android:src="@android:drawable/ic_menu_search"/>
 
-        <EditText
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
             android:layout_toEndOf="@+id/ic_magnify"
+            android:text=""
             android:textSize="15sp"
             android:textColor="#000"
             android:background="@null"
+            android:dropDownAnchor="@id/search_layout"
+            android:singleLine="true"
+            android:maxLength="140"
             android:hint="Введите описание места" />
 
     </RelativeLayout>

@@ -88,7 +88,7 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
     }
 
     @Override
-    public void onMapReady() {
+    public List<MyPlace> onMapReady() {
         List<MyPlace> places = jsonModel.getAllPlaces();
 
         for (int i = 0; i < places.size(); i++) {
@@ -96,6 +96,8 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
             LatLng location = new LatLng(place.getLatitude(), place.getLongitude());
             getView().addMapMarker(place.getTitle(), place.getDescription(), location, i);
         }
+
+        return places;
     }
 
     @Override

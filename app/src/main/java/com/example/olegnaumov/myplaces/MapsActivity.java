@@ -2,6 +2,7 @@ package com.example.olegnaumov.myplaces;
 
 import android.app.Activity;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -10,10 +11,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.olegnaumov.myplaces.model.MyPlace;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,6 +27,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener, MapPlacesContract.View {
@@ -45,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements
         mPresenter = new MapPlacesPresenter(getApplicationContext());
         mPresenter.attachView(this);
 
-        mFab = (FloatingActionButton) findViewById(R.id.add_marker_fab);
+        mFab = findViewById(R.id.add_marker_fab);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +92,8 @@ public class MapsActivity extends FragmentActivity implements
 
         googleMap.setOnMarkerClickListener(this);
 
-        mPresenter.onMapReady();
+        List<MyPlace> autoCompletePlaces = mPresenter.onMapReady();
+        setAutoCompleteAdapter(autoCompletePlaces);
     }
 
     @Override
@@ -197,5 +205,28 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void removeMapMarker(Marker marker) {
         marker.remove();
+    }
+
+    private void setAutoCompleteAdapter(final List<MyPlace> autoCompletePlaces) {
+        AutoCompleteTextView autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
+
+        PlaceAdapter adapter = new PlaceAdapter(this, R.layout.activity_maps, 0, autoCompletePlaces);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        autoCompleteTextView.setAdapter(adapter);
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+                MyPlace selectedPlace = (MyPlace) adapterView.getItemAtPosition(pos);
+                Location placeLocation = new Location(LocationManager.GPS_PROVIDER);
+                placeLocation.setLatitude(selectedPlace.getLatitude());
+                placeLocation.setLongitude(selectedPlace.getLongitude());
+                animateCamera(placeLocation);
+            }
+        });
     }
 }
