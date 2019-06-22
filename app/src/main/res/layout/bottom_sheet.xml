@@ -30,7 +30,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
+        android:gravity="end"
         android:orientation="horizontal">
 
         <Button
@@ -38,14 +38,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-            android:text="ЗАКРЫТЬ" />
+            android:text="@string/close_ru" />
 
         <Button
             android:id="@+id/delete_place_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-            android:text="УДАЛИТЬ" />
+            android:text="@string/delete_ru" />
     </LinearLayout>
 
 </LinearLayout>

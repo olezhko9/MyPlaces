@@ -48,7 +48,7 @@
             android:dropDownAnchor="@id/search_layout"
             android:singleLine="true"
             android:maxLength="140"
-            android:hint="Введите описание места" />
+            android:hint="@string/search_tv_hint" />
 
     </RelativeLayout>
 

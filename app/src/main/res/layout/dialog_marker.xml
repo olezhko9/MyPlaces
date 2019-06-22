@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
         android:singleLine="true"
-        android:hint="Название"/>
+        android:hint="@string/dialog_place_title_hint"/>
 
     <EditText
         android:id="@+id/marker_description_et"
@@ -23,6 +23,6 @@
         android:maxLines="4"
         android:scrollbars="vertical"
         android:maxLength="140"
-        android:hint="Описание места"/>
+        android:hint="@string/dialog_place_decription_hint"/>
 
 </LinearLayout>

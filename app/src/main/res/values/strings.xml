@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">ItemApp</string>
     <string name="title_activity_maps">Map</string>
+    <string name="search_tv_hint">Введите описание места</string>
+    <string name="close_ru">ЗАКРЫТЬ</string>
+    <string name="delete_ru">УДАЛИТЬ</string>
+    <string name="dialog_place_title_hint">Название</string>
+    <string name="dialog_place_decription_hint">Описание места</string>
 </resources>
