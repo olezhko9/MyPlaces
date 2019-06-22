@@ -144,7 +144,7 @@ public class MapsActivity extends FragmentActivity implements
 
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) bottomDialogView.getParent());
         bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics()));
+                TypedValue.COMPLEX_UNIT_DIP, 54, getResources().getDisplayMetrics()));
 
 
         TextView placeTitleTV = bottomDialogView.findViewById(R.id.place_title_tv);
