@@ -62,8 +62,10 @@ public class PlaceAdapter extends ArrayAdapter<MyPlace> {
             if (constraint != null) {
                 suggestions.clear();
                 for (MyPlace myPlace : tempItems) {
-                    if (myPlace.getDescription().toLowerCase().contains(constraint.toString().toLowerCase())) {
-                        suggestions.add(myPlace);
+                    if (myPlace != null) {
+                        if (myPlace.getDescription().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                            suggestions.add(myPlace);
+                        }
                     }
                 }
                 FilterResults filterResults = new FilterResults();
@@ -81,17 +83,12 @@ public class PlaceAdapter extends ArrayAdapter<MyPlace> {
             if (results != null && results.count > 0) {
                 clear();
                 for (MyPlace myPlace : filterList) {
-                    add(myPlace);
-                    notifyDataSetChanged();
+                    if (myPlace != null) {
+                        add(myPlace);
+                        notifyDataSetChanged();
+                    }
                 }
             }
         }
     };
-
-    public ArrayAdapter updateItems(List<MyPlace> items) {
-        this.items = items;
-        this.tempItems = new ArrayList<>(items);
-        this.suggestions = new ArrayList<>();
-        return this;
-    }
 }

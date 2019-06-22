@@ -99,9 +99,11 @@ public class MapPlacesPresenter extends BasePresenter<MapPlacesContract.View> im
         List<MyPlace> places = jsonModel.getAllPlaces();
 
         for (int i = 0; i < places.size(); i++) {
-            MyPlace place = places.get(i);
-            LatLng location = new LatLng(place.getLatitude(), place.getLongitude());
-            getView().addMapMarker(place.getTitle(), place.getDescription(), location, i);
+            if (places.get(i) != null) {
+                MyPlace place = places.get(i);
+                LatLng location = new LatLng(place.getLatitude(), place.getLongitude());
+                getView().addMapMarker(place.getTitle(), place.getDescription(), location, i);
+            }
         }
     }
 
